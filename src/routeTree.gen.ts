@@ -11,13 +11,34 @@
 // Import Routes
 
 import { Route as rootRoute } from './routes/__root'
+import { Route as SigninImport } from './routes/signin'
+import { Route as NewImport } from './routes/new'
 import { Route as IndexImport } from './routes/index'
+import { Route as ProjectIdImport } from './routes/project.$id'
 
 // Create/Update Routes
+
+const SigninRoute = SigninImport.update({
+  id: '/signin',
+  path: '/signin',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const NewRoute = NewImport.update({
+  id: '/new',
+  path: '/new',
+  getParentRoute: () => rootRoute,
+} as any)
 
 const IndexRoute = IndexImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const ProjectIdRoute = ProjectIdImport.update({
+  id: '/project/$id',
+  path: '/project/$id',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -32,6 +53,27 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexImport
       parentRoute: typeof rootRoute
     }
+    '/new': {
+      id: '/new'
+      path: '/new'
+      fullPath: '/new'
+      preLoaderRoute: typeof NewImport
+      parentRoute: typeof rootRoute
+    }
+    '/signin': {
+      id: '/signin'
+      path: '/signin'
+      fullPath: '/signin'
+      preLoaderRoute: typeof SigninImport
+      parentRoute: typeof rootRoute
+    }
+    '/project/$id': {
+      id: '/project/$id'
+      path: '/project/$id'
+      fullPath: '/project/$id'
+      preLoaderRoute: typeof ProjectIdImport
+      parentRoute: typeof rootRoute
+    }
   }
 }
 
@@ -39,32 +81,47 @@ declare module '@tanstack/react-router' {
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/new': typeof NewRoute
+  '/signin': typeof SigninRoute
+  '/project/$id': typeof ProjectIdRoute
 }
 
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/new': typeof NewRoute
+  '/signin': typeof SigninRoute
+  '/project/$id': typeof ProjectIdRoute
 }
 
 export interface FileRoutesById {
   __root__: typeof rootRoute
   '/': typeof IndexRoute
+  '/new': typeof NewRoute
+  '/signin': typeof SigninRoute
+  '/project/$id': typeof ProjectIdRoute
 }
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths: '/' | '/new' | '/signin' | '/project/$id'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to: '/' | '/new' | '/signin' | '/project/$id'
+  id: '__root__' | '/' | '/new' | '/signin' | '/project/$id'
   fileRoutesById: FileRoutesById
 }
 
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  NewRoute: typeof NewRoute
+  SigninRoute: typeof SigninRoute
+  ProjectIdRoute: typeof ProjectIdRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  NewRoute: NewRoute,
+  SigninRoute: SigninRoute,
+  ProjectIdRoute: ProjectIdRoute,
 }
 
 export const routeTree = rootRoute
@@ -77,11 +134,23 @@ export const routeTree = rootRoute
     "__root__": {
       "filePath": "__root.tsx",
       "children": [
-        "/"
+        "/",
+        "/new",
+        "/signin",
+        "/project/$id"
       ]
     },
     "/": {
       "filePath": "index.tsx"
+    },
+    "/new": {
+      "filePath": "new.tsx"
+    },
+    "/signin": {
+      "filePath": "signin.tsx"
+    },
+    "/project/$id": {
+      "filePath": "project.$id.tsx"
     }
   }
 }
